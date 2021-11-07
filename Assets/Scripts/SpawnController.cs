@@ -8,6 +8,9 @@ using UnityEditor;
 
 public class SpawnController : MonoBehaviour
 {
+    //Unique counter for names. 
+    private static int Index;
+
     [SerializeField]
     private GameObject prefab;
 
@@ -50,6 +53,7 @@ public class SpawnController : MonoBehaviour
 
         var spawnPoint = RandomSpawnPoint();
         var obj = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation, parent);
+        obj.name = $"{prefab.name} {Index++}"; //makes scene view easier
         if (!obj.TryGetComponent<SpawnedObject>(out result))
         {
             result = obj.AddComponent<SpawnedObject>();
@@ -71,5 +75,4 @@ public class SpawnController : MonoBehaviour
             AddPrefab(out _);
         }
     }
-
 }

@@ -21,11 +21,11 @@ public class Agent : MonoBehaviour
         availableActions = new HashSet<Action>();
         currentActions = new Stack<Action>();
 
-        foreach (Action action in FindObjectsOfType<Action>())
+        foreach (var actionComponent in FindObjectsOfType<ActionComponent>())
         {
-            if (action.IsGloballyAvailable || action.gameObject == this.gameObject)
+            if (actionComponent.IsGloballyAvailable || actionComponent.gameObject == this.gameObject)
             {
-                availableActions.Add(action);
+                availableActions.Add(actionComponent);
             }
         }
 
@@ -45,10 +45,7 @@ public class Agent : MonoBehaviour
 
             if (currentAction.isActive) return; //Action is running
 
-            foreach (string effect in currentAction.effects)
-            {
-                attributes.Add(effect);
-            }
+            ApplyEffects(currentAction.Effects, ref attributes);
 
             currentActions.Pop();
         }
@@ -56,18 +53,19 @@ public class Agent : MonoBehaviour
         if (currentActions.Count == 0)
         {
             EnqueueNextActions();
-            Debug.Assert(currentActions.Count > 0, "No actions were enqueued!");
+            Debug.Assert(currentActions.Count > 0, $"{name} computed no actions!");
         }
+
         var action = currentActions.Peek();
 
-        if (!action.arePreconditionsMet(attributes)) Debug.LogWarning("Chosen action's preconditions are not met! Potentially unstable");
+        if (!action.arePreconditionsMet(this, attributes)) Debug.LogWarning($"{name}'s action's preconditions are not met! Potentially unstable");
 
-        action.Begin();
+        action.Begin(this);
     }
 
     private void EnqueueNextActions()
     {
-        Debug.Log("Calculating action");
+        Debug.Log($"{name} calculating actions...");
         var solutions = new List<Node>();
         FindAllAvailableActions(new Node(null, 0, attributes, null), availableActions, solutions);
 
@@ -97,20 +95,37 @@ public class Agent : MonoBehaviour
             currentActions.Push(selectedNode.action);
             selectedNode = selectedNode.parent;
         }
+        Debug.Log($"{name} added {currentActions.Count} actions.");
     }
 
     private void FindAllAvailableActions(Node parent, IEnumerable<Action> actions, List<Node> solutions)
     {
         foreach (Action act in actions)
         {
-            var expandedState = parent.state.Union(act.effects);
-            if (act.preconditions.Intersect(parent.state).Count() == act.preconditions.Count && act.arePreconditionsMet(parent.state))
+            if (act.Preconditions.Intersect(parent.state).Count() == act.Preconditions.Count && act.arePreconditionsMet(this, parent.state))
             {
-                var node = new Node(parent, parent.totalCost + act.cost, expandedState, act);
+                var expandedState = parent.state.ToList();
+                ApplyEffects(act.Effects, ref expandedState);
+                var node = new Node(parent, parent.totalCost + act.Cost, expandedState, act);
 
                 solutions.Add(node);
 
                 FindAllAvailableActions(node, actions.Except(new Action[] { act }), solutions);
+            }
+        }
+    }
+
+    private void ApplyEffects(IEnumerable<Pair<string,bool>> effects, ref List<string> attributes)
+    {
+        foreach (var change in effects)
+        {
+            if (change.Value && !attributes.Contains(change.Key))
+            {
+                attributes.Add(change.Key);
+            }
+            else if (!change.Value && attributes.Contains(change.Key))
+            {
+                attributes.Remove(change.Key);
             }
         }
     }

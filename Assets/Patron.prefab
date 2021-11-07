@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7883370629487580947}
   - component: {fileID: 3715374329555757274}
   m_Layer: 0
-  m_Name: PatronPrefab
+  m_Name: Patron
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2de7e64324d324d4a92ee44b9b90eb27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialAttributes: []
+  attributes: []
 --- !u!114 &635175965210144797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,10 +124,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25ee5b3359d952b4b959fd0542001c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preconditions: []
-  effects:
-  - bored
-  cost: 1
+  _preconditions: []
+  _effects:
+  - Key: bored
+    Value: 1
+  _cost: 1
   MinTime: 30
   MaxTime: 60
 --- !u!54 &7883370629487580947
@@ -158,11 +159,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3763be6d3df3a924a82a775229255a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preconditions:
+  _preconditions:
   - bored
-  effects:
-  - tired
-  cost: 1
+  _effects:
+  - Key: tired
+    Value: 1
+  - Key: bored
+    Value: 0
+  _cost: 1
   MinTime: 15
   MaxTime: 30
   moveSpeed: 1

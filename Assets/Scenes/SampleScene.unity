@@ -151,8 +151,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1595985501}
-  - {fileID: 1465771873}
   - {fileID: 1860397322}
+  - {fileID: 1465771873}
   - {fileID: 483637765}
   - {fileID: 705507995}
   - {fileID: 476534740}
@@ -300,10 +300,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab7d2007b5ea651428a0a88d5cd5e7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preconditions: []
-  effects:
-  - resting
-  cost: 1
+  _preconditions:
+  - tired
+  _effects:
+  - Key: tired
+    Value: 0
+  _cost: 1
 --- !u!65 &476534742
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1012,7 +1014,7 @@ MonoBehaviour:
   - {fileID: 483637765}
   minWait: 10
   maxWait: 30
-  maxObjects: 1
+  maxObjects: 3
 --- !u!82 &962573822
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1247,7 +1249,7 @@ GameObject:
   - component: {fileID: 1465771875}
   - component: {fileID: 1465771874}
   m_Layer: 0
-  m_Name: CanBeMovedThrough
+  m_Name: CanBeMovedThroughByPlayer(Default)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1265,7 +1267,7 @@ Transform:
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 78621635}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1465771874
 BoxCollider:
@@ -1386,7 +1388,7 @@ GameObject:
   - component: {fileID: 1595985503}
   - component: {fileID: 1595985502}
   m_Layer: 6
-  m_Name: Plane
+  m_Name: Plane(Solid)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1478,8 +1480,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1860397322}
-  m_Layer: 0
-  m_Name: Building
+  m_Layer: 6
+  m_Name: Building(Solid)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1502,7 +1504,7 @@ Transform:
   - {fileID: 748610836}
   - {fileID: 743674977}
   m_Father: {fileID: 78621635}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1956312801
 GameObject:

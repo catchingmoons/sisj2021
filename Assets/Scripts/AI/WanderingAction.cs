@@ -23,7 +23,7 @@ public class WanderingAction : IdleAction
 
     private bool isReset; //used to terminate coroutine
 
-    public override void Awake()  //Override is important, because idle action warns about stuff we don't care about, so we specifically avoid base
+    public override void Awake()  //Idle action warns about stuff we don't care about, so we specifically avoid base
     {
         rb = GetComponent<Rigidbody>();
     }
@@ -35,7 +35,12 @@ public class WanderingAction : IdleAction
         rb.MovePosition(transform.position + transform.forward * moveSpeed * Time.fixedDeltaTime);
     }
 
-    public override bool Begin()
+    void OnDisable()
+    {
+        isReset = true;
+    }
+
+    public override bool Begin(Agent agent)
     {
         // Set random initial rotation
         heading = Random.Range(0, 360);
@@ -44,8 +49,11 @@ public class WanderingAction : IdleAction
         isReset = false;
         StartCoroutine(NewHeading());
 
-        base.Begin();
-
+        if (!base.Begin(agent))
+        {
+            isReset = true;
+            return false;
+        }
         return true;
     }
 
