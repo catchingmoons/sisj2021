@@ -13,6 +13,12 @@ public class InputController : MonoBehaviour
 
     public void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+            return;
+        }
+
         direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
         //DEBUGGING - probably don't want keys to control music

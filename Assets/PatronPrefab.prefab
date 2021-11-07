@@ -12,6 +12,10 @@ GameObject:
   - component: {fileID: 4263248770337343761}
   - component: {fileID: 4263248770337343982}
   - component: {fileID: 4263248770337343983}
+  - component: {fileID: 8972285957077157470}
+  - component: {fileID: 635175965210144797}
+  - component: {fileID: 7883370629487580947}
+  - component: {fileID: 3715374329555757274}
   m_Layer: 0
   m_Name: PatronPrefab
   m_TagString: Untagged
@@ -95,3 +99,73 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8972285957077157470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4263248770337343980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de7e64324d324d4a92ee44b9b90eb27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialAttributes: []
+--- !u!114 &635175965210144797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4263248770337343980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25ee5b3359d952b4b959fd0542001c6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preconditions: []
+  effects:
+  - bored
+  cost: 1
+  MinTime: 30
+  MaxTime: 60
+--- !u!54 &7883370629487580947
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4263248770337343980}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &3715374329555757274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4263248770337343980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3763be6d3df3a924a82a775229255a11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preconditions:
+  - bored
+  effects:
+  - tired
+  cost: 1
+  MinTime: 15
+  MaxTime: 30
+  moveSpeed: 1
+  rotateSpeed: 1
+  rotateInterval: 0.1
+  maxHeadingChange: 30

@@ -22,7 +22,8 @@ public class MusicController : MonoBehaviour
 
         if (clips.Length > 0)
         {
-            source.clip = (AudioClip)clips[0];
+            //TODO add unlocking of clips!
+            source.clip = (AudioClip)clips[Random.Range(0, clips.Length)];
             PlayMusic();
         }
     }
