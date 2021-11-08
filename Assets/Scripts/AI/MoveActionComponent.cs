@@ -15,7 +15,7 @@ public class MoveActionComponent : MonoBehaviour, Action
 
     private Transform target;
     private float targetDistanceSq;
-    private Vector3 prevPosition; //In case of overshoot
+    private Vector3 prevPosition; //TODO In case of overshoot
 
     private bool running;
 
