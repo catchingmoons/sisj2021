@@ -7,6 +7,8 @@ public class InputController : MonoBehaviour
     [SerializeField]
     private PlayerController player;
     [SerializeField]
+    private Possession possessor;
+    [SerializeField]
     private MusicController music;
 
     private Vector2 direction;
@@ -17,6 +19,11 @@ public class InputController : MonoBehaviour
         {
             Application.Quit();
             return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.C)) 
+        {
+            possessor.Possess();
         }
 
         direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
