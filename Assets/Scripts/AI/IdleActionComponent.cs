@@ -12,17 +12,20 @@ public class IdleActionComponent : ActionComponent
 
     private float timeRemaining;
 
-    public override bool isActive => timeRemaining > 0;
+    public override bool Busy => timeRemaining > 0;
+    public override bool GloballyAvailable => false;
 
-    public override bool Begin()
+    public override bool Begin(Agent agent)
     {
+        if (!base.Begin(agent))
+        {
+            Debug.LogWarning($"{name} was unable to begin ActionComponent");
+        }
         timeRemaining = Random.Range(MinTime, MaxTime);
         return true;
     }
 
-    public override bool GloballyAvailable => false;
-
-    public virtual void Awake()
+    public void Awake()
     {
         if (Preconditions.Count > 0)
         {

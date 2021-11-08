@@ -11,24 +11,46 @@ public class MovementController : MonoBehaviour
     private float rotateSpeed = 1;
 
     private float turnDuration;
-    private Vector3? _direction;
+    private Quaternion? _direction;
+    private Transform _target;
 
-    public Vector3? Direction
+    public Quaternion? Direction
     {
         get => _direction;
         set
         {
-            if (value == null || value == Vector3.zero)
+            if (_target != null)
             {
-                _direction = null;
+                Debug.LogWarning("Direction set on movement with target");
+                _target = null;
             }
-            else if (_direction != value)
+            if (_direction != value)
             {
                 turnDuration = 0;
-                _direction = value.Value.normalized * 360;
             }
+            _direction = value;
         }
     }
+
+    public Transform Target
+    {
+        get => _target;
+        set
+        {
+            if (Direction.HasValue)
+            {
+                Debug.LogWarning("Target set on movement with direction");
+                _direction = null;
+            }
+            if (_target != value)
+            {
+                turnDuration = 0;
+            }
+            _target = value;
+        }
+    }
+
+    public bool Moving => Direction.HasValue || (Target != null && transform.position != Target.position);
 
     private Rigidbody rb;
 
@@ -39,11 +61,16 @@ public class MovementController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!Direction.HasValue) return;
+        if (!Direction.HasValue && Target == null) return;
+        if (!Moving) return;
+        Debug.Assert(!Direction.HasValue || Target == null); //Both shouldn't be active!
 
+        Quaternion desiredRotation = Direction.HasValue ? Direction.Value : Quaternion.LookRotation(Target.position - transform.position);
         turnDuration += rotateSpeed * Time.fixedDeltaTime;
-        rb.MoveRotation(Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Direction.Value, Vector3.up), turnDuration));
-        rb.MovePosition(transform.position + transform.forward * moveSpeed * Time.fixedDeltaTime);
+        rb.MoveRotation(Quaternion.Slerp(transform.rotation, desiredRotation, turnDuration));
+
+        Vector3 desiredDestination = Direction.HasValue ? (transform.position + transform.forward * 1000f) : (Target.position);
+        rb.MovePosition(Vector3.MoveTowards(transform.position, desiredDestination, moveSpeed * Time.fixedDeltaTime));
     }
 
     void OnDisable()

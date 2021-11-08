@@ -14,43 +14,50 @@ public class WanderingActionComponent : IdleActionComponent
 
     private MovementController moveController;
 
-    private float? heading;
+    private bool running;
 
-    public override void Awake()  //Idle action warns about stuff we don't care about, so we specifically avoid base
+    public new void Awake()  //Idle action warns about stuff we don't care about, so we specifically avoid base
     {
         moveController = GetComponent<MovementController>();
     }
 
     void OnDisable()
     {
-        heading = null;
+        running = false;
+        moveController.Direction = null;
     }
 
-    public override bool Begin()
+    public override bool Begin(Agent agent)
     {
-        heading = transform.rotation.eulerAngles.y;
-        StartCoroutine(ChangeHeading());
-
-        if (!base.Begin())
+        if (running)
         {
-            heading = null;
+            Debug.LogWarning("Begin called while already begun");
             return false;
         }
+        if (!base.Begin(agent))
+        {
+            Debug.LogWarning($"{name} was unable to begin parent");
+            return false;
+        }
+
+        running = true;
+        StartCoroutine(ChangeHeading());
         return true;
     }
 
     public override void Reset()
     {
-        heading = null;
+        running = false;
+        moveController.Direction = null;
         base.Reset();
     }
 
     IEnumerator ChangeHeading()
     {
-        while (heading.HasValue)
+        while (running)
         {
-            heading = (heading + Random.Range(-maxHeadingChange, maxHeadingChange)) % 360;
-            moveController.Direction = new Vector3(0, heading.Value, 0);
+            var turnAmount = Random.Range(-maxHeadingChange, maxHeadingChange);
+            moveController.Direction = Quaternion.Euler(0f, turnAmount, 0f);
             yield return new WaitForSeconds(rotateInterval);
         }
     }

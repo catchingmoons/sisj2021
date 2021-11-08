@@ -7,9 +7,10 @@ public class ChairActionComponent : ActionComponent
 {
     private float timeRemaining;
 
-    public override bool isActive => timeRemaining > 0;
+    public override bool Busy => timeRemaining > 0;
+    public override bool GloballyAvailable => true;
 
-    public override bool Begin()
+    public override bool Begin(Agent actor)
     {
         timeRemaining = 100;
         return true;
@@ -17,7 +18,7 @@ public class ChairActionComponent : ActionComponent
 
     public void Awake()
     {
-        Debug.LogWarning("Implementation of global object pending!");
+        Debug.LogWarning("Implementation of global pending!");
     }
 
     void Update()

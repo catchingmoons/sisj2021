@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PatronSpawner : MonoBehaviour
@@ -7,7 +8,7 @@ public class PatronSpawner : MonoBehaviour
     [SerializeField]
     private SpawnController spawner;
     [SerializeField]
-    private Transform destination;
+    private List<ActionComponent> intialActions;
 
     void Awake()
     {
@@ -21,16 +22,6 @@ public class PatronSpawner : MonoBehaviour
         spawner.onCreation += StartWithActions;
     }
 
-    void Start()
-    {
-        if (!spawner.PrefabHasComponent<MoveActionComponent>())
-        {
-            Debug.LogWarning($"Spawner associated prefab cannot move. Disabling PatronSpawner {name}");
-            enabled = false;
-            return;
-        }
-    }
-
     void OnDisable()
     {
         if (spawner != null && spawner.onCreation != null)
@@ -41,10 +32,10 @@ public class PatronSpawner : MonoBehaviour
 
     public void StartWithActions(GameObject obj)
     {
-        var movement = obj.GetComponent<MoveActionComponent>();
-        movement.SetTarget(destination);
-
         var agent = obj.GetComponent<Agent>();
-        agent.PushAction(movement);
+        foreach(var action in intialActions.Reverse<ActionComponent>())
+        {
+            agent.PushAction(action);
+        }
     }
 }

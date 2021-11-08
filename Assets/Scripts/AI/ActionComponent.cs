@@ -18,7 +18,7 @@ public abstract class ActionComponent : MonoBehaviour, Action
 
 	public List<string> Preconditions => _preconditions;
 	public List<Pair<string, bool>> Effects => _effects;
-	public float Cost => _cost;
+	public virtual float Cost(Agent agent) => _cost;
 
 	//Can't change any state! Agent's attributes should not be used, only the supplied collection
 	public virtual bool arePreconditionsMet(IEnumerable<string> state)
@@ -30,9 +30,17 @@ public abstract class ActionComponent : MonoBehaviour, Action
 		return true;
     }
 	public virtual void Reset() { }
-	//Anything not attached to a character, and only usable by 1 agent
-	public virtual bool GloballyAvailable => true;
 
-	public abstract bool Begin();
-	public abstract bool isActive { get; }
+	public virtual bool Begin(Agent actor)
+    {
+		if (!GloballyAvailable && actor.gameObject != gameObject)
+        {
+			Debug.LogWarning($"{name} Non-GloballyAvailable actions cannot use a different actor! {actor.name}");
+			return false;
+        }
+		return true;
+	}
+
+	public abstract bool Busy { get; }
+	public abstract bool GloballyAvailable { get; }
 }

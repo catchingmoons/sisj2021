@@ -49,17 +49,22 @@ public class Agent : MonoBehaviour
         while (currentActions.Count > 0)
         {
             var action = currentActions.Peek();
-
+            Debug.Assert(action != null , ""+currentActions.Count);
             if (currentAction == null)
             {
-                action.Begin();
+                if (!action.Begin(this))
+                {
+                    Debug.LogWarning($"{name} is unable to begin {action}. Skipping");
+                    continue;
+                }
                 currentAction = action;
             }
 
-            if (action.isActive) return; //still running. EXITS EARLY
+            if (action.Busy) return; //still running. EXITS EARLY
 
             ApplyEffects(action.Effects, ref attributes);
 
+            currentAction.Reset();
             currentAction = null;
 
             currentActions.Pop();
@@ -113,7 +118,7 @@ public class Agent : MonoBehaviour
             {
                 var expandedState = parent.state.ToList();
                 ApplyEffects(act.Effects, ref expandedState);
-                var node = new Node(parent, parent.totalCost + act.Cost, expandedState, act);
+                var node = new Node(parent, parent.totalCost + act.Cost(this), expandedState, act);
 
                 solutions.Add(node);
 
