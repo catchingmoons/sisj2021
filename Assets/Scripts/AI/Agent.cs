@@ -13,8 +13,9 @@ public class Agent : MonoBehaviour
     [SerializeField][Tooltip("Description of various things a character might be (e.g. \"wet\", \"cold\", \"has_coffee\")")]
     public List<string> attributes;
 
-    private ISet<Action> availableActions; //All actions in game that this might be able to use. 
+    private ISet<Action> availableActions;
     private Stack<Action> currentActions;
+    private Action currentAction; //needed to know if the first action was started
 
     public void Awake()
     {
@@ -23,7 +24,7 @@ public class Agent : MonoBehaviour
 
         foreach (var actionComponent in FindObjectsOfType<ActionComponent>())
         {
-            if (actionComponent.IsGloballyAvailable || actionComponent.gameObject == this.gameObject)
+            if (actionComponent.GloballyAvailable || actionComponent.gameObject == gameObject)
             {
                 availableActions.Add(actionComponent);
             }
@@ -31,45 +32,52 @@ public class Agent : MonoBehaviour
 
         if (availableActions.Count == 0)
         {
-            Debug.LogWarning("no available actions! Disabling Agent.");
-            enabled = false;
+            Debug.LogWarning("No available actions!");
             return;
         }
     }
 
     public void Update()
     {
-        if (currentActions.Count > 0)
+        if (currentActions.Count == 0)
         {
-            var currentAction = currentActions.Peek();
+            AddNewActions();
+            Debug.Assert(currentActions.Count > 0, $"{name} computed no actions!");
+            Debug.Assert(currentAction == null, $"{name} has active action: {currentAction}");
+        }
 
-            if (currentAction.isActive) return; //Action is running
+        while (currentActions.Count > 0)
+        {
+            var action = currentActions.Peek();
 
-            ApplyEffects(currentAction.Effects, ref attributes);
+            if (currentAction == null)
+            {
+                action.Begin();
+                currentAction = action;
+            }
+
+            if (action.isActive) return; //still running. EXITS EARLY
+
+            ApplyEffects(action.Effects, ref attributes);
+
+            currentAction = null;
 
             currentActions.Pop();
         }
-
-        if (currentActions.Count == 0)
-        {
-            EnqueueNextActions();
-            Debug.Assert(currentActions.Count > 0, $"{name} computed no actions!");
-        }
-
-        var action = currentActions.Peek();
-
-        if (!action.arePreconditionsMet(this, attributes)) Debug.LogWarning($"{name}'s action's preconditions are not met! Potentially unstable");
-
-        action.Begin(this);
     }
 
-    private void EnqueueNextActions()
+    public void PushAction(Action action)
+    {
+        currentActions.Push(action);
+    }
+
+    private void AddNewActions()
     {
         Debug.Log($"{name} calculating actions...");
         var solutions = new List<Node>();
         FindAllAvailableActions(new Node(null, 0, attributes, null), availableActions, solutions);
 
-        Debug.Assert(solutions.Count > 0, "No actions found viable!");
+        Debug.Assert(solutions.Count > 0, "No viable actions found!");
 
         //reduce to minimum chains for each potential action
         Dictionary<Action, Node> mins = new Dictionary<Action, Node>();
@@ -92,17 +100,16 @@ public class Agent : MonoBehaviour
         var selectedNode = mins[potentialActions[Random.Range(0, potentialActions.Count)]];
         while (selectedNode != null && selectedNode.action != null)
         {
-            currentActions.Push(selectedNode.action);
+            PushAction(selectedNode.action);
             selectedNode = selectedNode.parent;
         }
-        Debug.Log($"{name} added {currentActions.Count} actions.");
     }
 
     private void FindAllAvailableActions(Node parent, IEnumerable<Action> actions, List<Node> solutions)
     {
         foreach (Action act in actions)
         {
-            if (act.Preconditions.Intersect(parent.state).Count() == act.Preconditions.Count && act.arePreconditionsMet(this, parent.state))
+            if (act.Preconditions.Intersect(parent.state).Count() == act.Preconditions.Count && act.arePreconditionsMet(parent.state))
             {
                 var expandedState = parent.state.ToList();
                 ApplyEffects(act.Effects, ref expandedState);
@@ -151,7 +158,7 @@ public class Agent : MonoBehaviour
     {
         if (currentActions != null && currentActions.Count > 0)
         {
-            Handles.Label(transform.position, $"{currentActions.Peek().GetType()}.");
+            Handles.Label(transform.position, $"{currentAction?.GetType()}.");
         }
     }
 #endif

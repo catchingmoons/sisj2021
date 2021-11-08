@@ -13,7 +13,7 @@ public abstract class ActionComponent : MonoBehaviour, Action
 	public List<string> _preconditions = new List<string>();
 	[SerializeField][Tooltip("Description of changes upon completion of this action (e.g. \"warm\":true, \"has_coffee\":false, \"full_bladder\":true")]
 	public List<Pair<string, bool>> _effects = new List<Pair<string, bool>>();
-	[SerializeField][Tooltip("Lowest cost method of resolving a given action is chosen")]
+	[SerializeField][Tooltip("Lowest cost method of resolving a chosen action is used")]
 	public float _cost = 1;
 
 	public List<string> Preconditions => _preconditions;
@@ -21,7 +21,7 @@ public abstract class ActionComponent : MonoBehaviour, Action
 	public float Cost => _cost;
 
 	//Can't change any state! Agent's attributes should not be used, only the supplied collection
-	public virtual bool arePreconditionsMet(Agent agent, IEnumerable<string> state)
+	public virtual bool arePreconditionsMet(IEnumerable<string> state)
     {
 		foreach (var condition in _preconditions)
         {
@@ -29,12 +29,10 @@ public abstract class ActionComponent : MonoBehaviour, Action
 		}
 		return true;
     }
-
 	public virtual void Reset() { }
+	//Anything not attached to a character, and only usable by 1 agent
+	public virtual bool GloballyAvailable => true;
 
-	public abstract bool Begin(Agent agent);
+	public abstract bool Begin();
 	public abstract bool isActive { get; }
-
-	//This is used to exclude a script from being grabbed out of the pool of all available actions
-	public virtual bool IsGloballyAvailable => true;
 }
