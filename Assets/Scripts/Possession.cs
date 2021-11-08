@@ -18,13 +18,13 @@ public class Possession : MonoBehaviour
 
     public void Possess()
     {
-        if (possessing == false && possessable == true)
+        if (!possessing && possessable)
         {
             possessable_obj.transform.SetParent(ghost_player.transform);
             ghost_rend.material.color = new Color(0.5322179f, 0.9811321f, 0.9420714f, 0.0f);
             possessing = true;
         }
-        else if (possessing == true)
+        else if (possessing)
         {
             possessable_obj.transform.SetParent(null);
             ghost_rend.material.color = new Color(0.5322179f, 0.9811321f, 0.9420714f, 1.0f);
@@ -34,7 +34,7 @@ public class Possession : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "possessable"){
+        if (other.CompareTag("possessable")){
             possessable_obj = other.gameObject;
             possessable = true;
         }
@@ -42,7 +42,7 @@ public class Possession : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.tag == "possessable"){
+        if (other.CompareTag("possessable")){
             possessable = false;
         }
     }

@@ -29,6 +29,9 @@ public class SpawnController : MonoBehaviour
     [SerializeField][Tooltip("Maximum objects to spawn")]
     private int maxObjects = 1;
 
+    public delegate void OnCreation(GameObject obj);
+    public OnCreation onCreation;
+
     private int numObjects;
     private float timeToSpawn;
 
@@ -51,6 +54,8 @@ public class SpawnController : MonoBehaviour
         result = null;
         if (numObjects >= maxObjects) return false;
 
+        numObjects++; //increment before doing anything. TODO scan periodically for sync?
+
         var spawnPoint = RandomSpawnPoint();
         var obj = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation, parent);
         obj.name = $"{prefab.name} {Index++}"; //makes scene view easier
@@ -59,12 +64,17 @@ public class SpawnController : MonoBehaviour
             result = obj.AddComponent<SpawnedObject>();
         }
         result.spawner = this;
+        if (onCreation != null)
+        {
+            onCreation(obj);
+        }
 
-        numObjects++;
         return true;
     }
 
     public void Decrement() => numObjects--;
+
+    public bool PrefabHasComponent<T>() where T : Component => prefab.GetComponent<T>() != null;
 
     private Transform RandomSpawnPoint() => spawnPoints[Random.Range(0, spawnPoints.Length)];
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Agent))] //Since this is not globally available, it needs to share a gameObject with a Agent
-public class IdleAction : ActionComponent
+public class IdleActionComponent : ActionComponent
 {
     [SerializeField][Tooltip("Minimum time in seconds to do nothing")]
     public float MinTime;
@@ -14,13 +14,13 @@ public class IdleAction : ActionComponent
 
     public override bool isActive => timeRemaining > 0;
 
-    public override bool Begin(Agent agent)
+    public override bool Begin()
     {
         timeRemaining = Random.Range(MinTime, MaxTime);
         return true;
     }
 
-    public override bool IsGloballyAvailable => false;
+    public override bool GloballyAvailable => false;
 
     public virtual void Awake()
     {
