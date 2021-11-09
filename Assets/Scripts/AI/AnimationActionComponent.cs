@@ -37,16 +37,7 @@ public class AnimationActionComponent : ActionComponent
         if (!base.arePreconditionsMet(agent, state)) return false;
         if (!agent.TryGetComponent<Animator>(out var anim)) return false;
 
-        bool found = false;
-        foreach (var clip in anim.runtimeAnimatorController.animationClips)
-        {
-            if (clip.name == animationName)
-            {
-                found = true;
-                break;
-            }
-        }
-        return found;
+        return true;
     }
 
     public override bool Busy
