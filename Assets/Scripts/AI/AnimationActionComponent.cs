@@ -25,17 +25,13 @@ public class AnimationActionComponent : ActionComponent
         return true;
     }
 
-    public override void Reset()
-    {
-        anim = null;
-    }
-
     public override bool arePreconditionsMet(Agent agent, IEnumerable<string> state)
     {
         Debug.Assert(agent != null);
 
         if (!base.arePreconditionsMet(agent, state)) return false;
-        if (!agent.TryGetComponent<Animator>(out var anim)) return false;
+        if (!agent.TryGetComponent<Animator>(out _)) return false;
+        //TODO check for clip name?
 
         return true;
     }
@@ -45,16 +41,15 @@ public class AnimationActionComponent : ActionComponent
         get
         {
             if (anim == null) return false;
-            if (anim.IsInTransition(0)) return false;
-
             var stateInfo = anim.GetCurrentAnimatorStateInfo(0);
             if (!stateInfo.IsName(animationName)) return false;
-            if (stateInfo.normalizedTime > stateInfo.length) return false;
+            if (!anim.IsInTransition(0) && stateInfo.normalizedTime > stateInfo.length) return false;
 
             return true;
         }
     }
 
-public override float Cost(Agent agent) => base.Cost(agent) + 1;
+    public override void Reset() => anim = null;
+    public override float Cost(Agent agent) => base.Cost(agent) + 1;
     public override bool GloballyAvailable => true;
 }

@@ -58,6 +58,7 @@ public class Agent : MonoBehaviour
                 }
                 else
                 {
+                    //Debug.Log("Starting " + action);
                     var started = action.Begin(this);
                     Debug.Assert(started);
                 }
@@ -67,7 +68,7 @@ public class Agent : MonoBehaviour
             if (action.Busy) return; //still running. EXITS EARLY
 
             ApplyEffects(action.Effects, ref attributes);
-
+            //Debug.Log("Stopping " + currentAction);
             currentAction.Reset();
             currentAction = null;
 
