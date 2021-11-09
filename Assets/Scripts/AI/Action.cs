@@ -13,7 +13,7 @@ public interface Action
 	public List<Pair<string, bool>> Effects { get; }
 	public bool GloballyAvailable { get; }
 	public bool Busy { get; }
-	public bool arePreconditionsMet(IEnumerable<string> state);
+	public bool arePreconditionsMet(Agent agent, IEnumerable<string> state);
 	public float Cost(Agent actor);
 	public bool Begin(Agent actor);
 	public void Reset();

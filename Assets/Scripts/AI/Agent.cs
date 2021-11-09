@@ -52,10 +52,14 @@ public class Agent : MonoBehaviour
             Debug.Assert(action != null , ""+currentActions.Count);
             if (currentAction == null)
             {
-                if (!action.Begin(this))
+                if (!action.arePreconditionsMet(this, attributes))
                 {
-                    Debug.LogWarning($"{name} is unable to begin {action}. Skipping");
-                    continue;
+                    Debug.LogWarning($"{name} is not eligible to start {action}. Skipping");
+                }
+                else
+                {
+                    var started = action.Begin(this);
+                    Debug.Assert(started);
                 }
                 currentAction = action;
             }
@@ -114,7 +118,7 @@ public class Agent : MonoBehaviour
     {
         foreach (Action act in actions)
         {
-            if (act.Preconditions.Intersect(parent.state).Count() == act.Preconditions.Count && act.arePreconditionsMet(parent.state))
+            if (act.Preconditions.Intersect(parent.state).Count() == act.Preconditions.Count && act.arePreconditionsMet(this, parent.state))
             {
                 var expandedState = parent.state.ToList();
                 ApplyEffects(act.Effects, ref expandedState);

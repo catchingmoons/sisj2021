@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 635175965210144797}
   - component: {fileID: 3715374329555757274}
   - component: {fileID: 7293501394001124352}
+  - component: {fileID: 2628258134773362735}
   m_Layer: 0
   m_Name: Patron
   m_TagString: Untagged
@@ -186,3 +187,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   rotateSpeed: 10
+--- !u!95 &2628258134773362735
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4263248770337343980}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bd77a7a9868fa9e4788085d8d6d9287a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -21,7 +21,7 @@ public abstract class ActionComponent : MonoBehaviour, Action
 	public virtual float Cost(Agent agent) => _cost;
 
 	//Can't change any state! Agent's attributes should not be used, only the supplied collection
-	public virtual bool arePreconditionsMet(IEnumerable<string> state)
+	public virtual bool arePreconditionsMet(Agent agent, IEnumerable<string> state)
     {
 		foreach (var condition in _preconditions)
         {
