@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Possessable : MonoBehaviour
 {
     [SerializeField]
     public bool Unlocked;
     private Outline Outliner;
+
+    public string scene;
 
     void Start()
     {
@@ -15,7 +18,7 @@ public class Possessable : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && Unlocked)
+        if (other.CompareTag("Player") && Unlocked)
         {
             Outliner.enabled = true;
         }
@@ -23,7 +26,7 @@ public class Possessable : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             Outliner.enabled = false;
         }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Possession : MonoBehaviour
 {
@@ -10,6 +11,22 @@ public class Possession : MonoBehaviour
     private Renderer ghost_rend;
     [SerializeField]
     public Transform possessableRoot;
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (possessable_obj != null && possessable_obj.scene.Length > 0 && MasterController.Instance != null)
+            {
+                //If MasterController.Instance isn't set, we're not running in master
+                MasterController.Instance.StartScene(possessable_obj.scene, GetACoffee); //Lose control next frame
+            }
+            else
+            {
+                TogglePossess();
+            }
+        }
+    }
 
     public void TogglePossess()
     {
@@ -21,15 +38,13 @@ public class Possession : MonoBehaviour
         }
         else if (possessable_obj != null)
         {
-            possessable_obj.transform.SetParent(transform);
-            ghost_rend.material.color = new Color(0.5322179f, 0.9811321f, 0.9420714f, 0.0f);
-            possessing = true;
+            setPossessed();
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Possessable>(out var possessable))
+        if (!possessing && other.TryGetComponent<Possessable>(out var possessable))
         {
             possessable_obj = possessable.Unlocked ? possessable : null;
         }
@@ -37,6 +52,22 @@ public class Possession : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        possessable_obj = null;
+        if (other.gameObject == possessable_obj.gameObject)
+        {
+            possessable_obj = null;
+        }
+    }
+
+    private void setPossessed()
+    {
+        possessable_obj.transform.SetParent(transform);
+        ghost_rend.material.color = new Color(0.5322179f, 0.9811321f, 0.9420714f, 0.0f);
+        possessing = true;
+    }
+
+    private void GetACoffee(GameObject obj)
+    {
+        possessable_obj = obj.GetComponent<Possessable>();
+        setPossessed();
     }
 }

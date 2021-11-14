@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class CoffeePourInputController : MonoBehaviour
 {
+    public CoffeeController coffeePrefab;
+
     public Slider fillSlider;
 
     public float fillrate = 0.3f;
@@ -20,9 +22,11 @@ public class CoffeePourInputController : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && MasterController.Instance != null)
         {
-            //Return to scene!
+            var coffee = Instantiate(coffeePrefab);
+            coffee.fullness = fullness;
+            MasterController.Instance.EndScene(coffee.gameObject);
         }
 
         if (Input.GetKey(KeyCode.F)) //purposely not in fixed update - is sensistive to frame rate
