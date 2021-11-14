@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 423166693}
   - component: {fileID: 423166692}
   - component: {fileID: 423166691}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -476,9 +476,9 @@ GameObject:
   - component: {fileID: 776127061}
   - component: {fileID: 776127060}
   - component: {fileID: 776127066}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -510,7 +510,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &776127062
 CapsuleCollider:
@@ -615,7 +615,7 @@ GameObject:
   - component: {fileID: 866174867}
   - component: {fileID: 866174866}
   - component: {fileID: 866174865}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -710,7 +710,7 @@ GameObject:
   - component: {fileID: 895964519}
   - component: {fileID: 895964518}
   - component: {fileID: 895964517}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -898,7 +898,7 @@ GameObject:
   - component: {fileID: 993077524}
   - component: {fileID: 993077523}
   - component: {fileID: 993077522}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Non-interactible Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -914,7 +914,7 @@ BoxCollider:
   m_GameObject: {fileID: 993077521}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -994,9 +994,9 @@ GameObject:
   - component: {fileID: 1118610274}
   - component: {fileID: 1118610273}
   - component: {fileID: 1118610277}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Interactible Cube
-  m_TagString: possessable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1129,7 +1129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1660137688}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Geometry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1167,7 +1167,7 @@ GameObject:
   - component: {fileID: 1773311958}
   - component: {fileID: 1773311957}
   - component: {fileID: 1773311956}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1262,7 +1262,7 @@ GameObject:
   - component: {fileID: 1968790762}
   - component: {fileID: 1968790761}
   - component: {fileID: 1968790760}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
