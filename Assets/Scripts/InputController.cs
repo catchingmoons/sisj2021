@@ -23,7 +23,7 @@ public class InputController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C)) 
         {
-            possessor.Possess();
+            possessor.TogglePossess();
         }
 
         direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
