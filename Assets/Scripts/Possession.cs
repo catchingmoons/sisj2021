@@ -11,6 +11,8 @@ public class Possession : MonoBehaviour
     private Renderer ghost_rend;
     [SerializeField]
     public Transform possessableRoot;
+    [SerializeField]
+    public GameObject ghost_child;
 
     public void Update()
     {
@@ -34,6 +36,7 @@ public class Possession : MonoBehaviour
         {
             possessable_obj.transform.SetParent(possessableRoot);
             ghost_rend.material.color = new Color(0.5322179f, 0.9811321f, 0.9420714f, 1.0f);
+            ghost_child.SetActive(true);
             possessing = false;
         }
         else if (possessable_obj != null)
@@ -62,6 +65,7 @@ public class Possession : MonoBehaviour
     {
         possessable_obj.transform.SetParent(transform);
         ghost_rend.material.color = new Color(0.5322179f, 0.9811321f, 0.9420714f, 0.0f);
+        ghost_child.SetActive(false);
         possessing = true;
     }
 
