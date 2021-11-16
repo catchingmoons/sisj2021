@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/MasterScene.unity
     guid: f94800884babf8b43a20909891f9d0bd
   - enabled: 1
-    path: Assets/Scenes/TestMap.unity
-    guid: b955077fb4daf974888ec473109a54fc
+    path: Assets/Scenes/LodgeMap.unity
+    guid: 0cb3917b9de370542b43a8e24fc16f5c
   - enabled: 1
     path: Assets/Scenes/CoffeePour.unity
     guid: 8ed1cfd8f3db3e94c96f16b39977f00d

@@ -1,77 +1,102 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Possession : MonoBehaviour
 {
-    bool possessing = false;
-    Possessable possessable_obj;
+    bool possessing;
+
+    public static Possessable currentFocus;
+    public List<Possessable> focusableObjects;
+
     [SerializeField]
-    private Renderer ghost_rend;
+    Transform holdAtPosition;
     [SerializeField]
-    public Transform possessableRoot;
-    [SerializeField]
-    public GameObject ghost_child;
+    GameObject possessorModel;
+
+    //private Color color =  new Color(0.5322179f, 0.9811321f, 0.9420714f, 1.0f);
+    private int focusNdx;
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        focusableObjects.RemoveAll(obj => !obj.inRangeToBePossessed);
+        if (!focusableObjects.Contains(currentFocus))
         {
-            if (possessable_obj != null && possessable_obj.scene.Length > 0 && MasterController.Instance != null)
+            focusNdx = 0;
+        }
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            focusNdx++;
+        }
+        if (focusNdx >= focusableObjects.Count)
+        {
+            focusNdx = 0;
+        }
+        currentFocus = focusableObjects.Count > 0 ? focusableObjects[focusNdx] : null;
+
+        if (Input.GetKeyDown(KeyCode.E) && currentFocus != null)
+        {
+            if (currentFocus.scene.Length > 0)
             {
-                //If MasterController.Instance isn't set, we're not running in master
-                MasterController.Instance.StartScene(possessable_obj.scene, GetACoffee); //Lose control next frame
+                //If this isn't set, we're not running Master, and can't load scenes
+                if (MasterController.Instance == null) return;
+                
+                MasterController.Instance.StartScene(currentFocus.scene, PossessReturnedObject); //Lose control after this frame. Possess will add focus
             }
             else
             {
                 TogglePossess();
             }
         }
+
+        possessorModel.SetActive(!possessing);
     }
 
     public void TogglePossess()
     {
         if (possessing)
         {
-            possessable_obj.transform.SetParent(possessableRoot);
-            ghost_rend.material.color = new Color(0.5322179f, 0.9811321f, 0.9420714f, 1.0f);
-            ghost_child.SetActive(true);
-            possessing = false;
+            unpossess();
         }
-        else if (possessable_obj != null)
+        else
         {
-            setPossessed();
+            setPossessed(currentFocus);
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (!possessing && other.TryGetComponent<Possessable>(out var possessable))
+        if (other.TryGetComponent<Possessable>(out var possessable) && possessable.Unlocked && possessable.inRangeToBePossessed)
         {
-            possessable_obj = possessable.Unlocked ? possessable : null;
+            focusableObjects.Add(possessable);
         }
     }
 
-    void OnTriggerExit(Collider other)
+    private void setPossessed(Possessable pos) //forces focus if not already present
     {
-        if (other.gameObject == possessable_obj.gameObject)
+        if (currentFocus != pos)
         {
-            possessable_obj = null;
+            currentFocus.transform.SetParent(null);
+            currentFocus = pos;
         }
-    }
 
-    private void setPossessed()
-    {
-        possessable_obj.transform.SetParent(transform);
-        ghost_rend.material.color = new Color(0.5322179f, 0.9811321f, 0.9420714f, 0.0f);
-        ghost_child.SetActive(false);
+        currentFocus.transform.SetParent(transform);
+        currentFocus.transform.position = holdAtPosition.transform.position;
+
         possessing = true;
     }
 
-    private void GetACoffee(GameObject obj)
+    private void unpossess() //Note: does not remove focus
     {
-        possessable_obj = obj.GetComponent<Possessable>();
-        setPossessed();
+        currentFocus.transform.SetParent(null);
+        
+        possessing = false;
+    }
+
+    private void PossessReturnedObject(GameObject obj)
+    {
+        setPossessed(obj.GetComponent<Possessable>());
     }
 }

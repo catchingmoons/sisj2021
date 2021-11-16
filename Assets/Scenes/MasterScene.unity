@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21ebeac7ae579c4498c8cc043b7397a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  main: TestMap
+  main: LodgeMap
   coffeePour: CoffeePour
   passingObj: {fileID: 0}
   music: {fileID: 1980036750}

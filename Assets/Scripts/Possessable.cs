@@ -3,36 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(Outline))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
 public class Possessable : MonoBehaviour
 {
     [SerializeField]
     public bool Unlocked;
-    private Outline Outliner;
 
     public string scene;
 
-    void Start()
+    public bool inRangeToBePossessed { get; private set; }
+    public bool isTarget => Possession.currentFocus == this;
+
+    private Outline outline;
+
+    public void Awake()
     {
-        Outliner = GetComponent<Outline>();
+        outline = GetComponent<Outline>();
+    }
+
+    public void Update()
+    {
+        outline.enabled = inRangeToBePossessed && isTarget;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && Unlocked)
+        if (other.CompareTag("Player"))
         {
-            Outliner.enabled = true;
+            inRangeToBePossessed = true;
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (inRangeToBePossessed && other.CompareTag("Player"))
         {
-            Outliner.enabled = false;
+            inRangeToBePossessed = false;
         }
-        
     }
 }
-
-
-

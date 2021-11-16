@@ -7,8 +7,7 @@ public class MasterController : MonoBehaviour
 {
     public static MasterController Instance;
 
-    public delegate void ReturnToMain(GameObject obj);
-    public ReturnToMain onReturn;
+    public System.Action<GameObject> onReturn;
 
     //Todo common UI?
     public string main;
@@ -28,8 +27,12 @@ public class MasterController : MonoBehaviour
     {
         if (Instance != null) return;
 
-        SceneManager.LoadScene(main, LoadSceneMode.Additive);
         mainScene = SceneManager.GetSceneByName(main);
+        if (mainScene == null) //Editor can load multiple scenes
+        {
+            SceneManager.LoadScene(main, LoadSceneMode.Additive);
+            mainScene = SceneManager.GetSceneByName(main);
+        }
 
         Instance = this;
     }
@@ -48,7 +51,7 @@ public class MasterController : MonoBehaviour
         }
 
         //DEBUGGING - probably don't want keys to control music
-        if (music.isActiveAndEnabled)
+        if (music != null && music.isActiveAndEnabled)
         {
             if (Input.GetKeyDown(KeyCode.L)) music.StopMusic();
             if (Input.GetKeyDown(KeyCode.P)) music.PlayMusic();
@@ -56,7 +59,7 @@ public class MasterController : MonoBehaviour
         }
     }
 
-    public void StartScene(string name, ReturnToMain returnFunc = null)
+    public void StartScene(string name, System.Action<GameObject> returnFunc = null)
     {
         hidden = SceneManager.GetActiveScene().GetRootGameObjects();
         foreach (var obj in hidden)
