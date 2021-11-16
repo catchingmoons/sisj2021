@@ -9,7 +9,7 @@ public class Possession : MonoBehaviour
     bool possessing;
 
     public static Possessable currentFocus;
-    public List<Possessable> focusableObjects;
+    public List<Possessable> focusableObjects = new List<Possessable>();
 
     [SerializeField]
     Transform holdAtPosition;
