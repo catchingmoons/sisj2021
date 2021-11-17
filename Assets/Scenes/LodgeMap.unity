@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4466073, g: 0.49644834, b: 0.5748355, a: 1}
+  m_IndirectSpecularColor: {r: 0.4466073, g: 0.49644828, b: 0.57483536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5577,6 +5577,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4abe935d7cf64d408b6055bf11e6270, type: 3}
+--- !u!1 &861591924 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1038236185004510184, guid: d4abe935d7cf64d408b6055bf11e6270, type: 3}
+  m_PrefabInstance: {fileID: 861591923}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &861591925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861591924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfda9a779589d34d9a9bbfb9e5b6f7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  react_prefab: {fileID: 8658623561603362774, guid: a165da49648c7fd4689f1b5192292c8b, type: 3}
 --- !u!1001 &890787735
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6447,11 +6465,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 971914432}
   m_LocalRotation: {x: 0.9019758, y: -0.083878264, z: 0.00613873, w: 0.42351678}
-  m_LocalPosition: {x: -1.0799999, y: -0.64000034, z: 34.46}
+  m_LocalPosition: {x: 0.32487106, y: 7.649331, z: 33.98909}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1250897834}
-  m_RootOrder: 7
+  m_Father: {fileID: 1758083616}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 130.09, y: 5.343994, z: 13.113998}
 --- !u!1 &988953080
 GameObject:
@@ -7250,7 +7268,6 @@ Transform:
   - {fileID: 1796390927}
   - {fileID: 1836253833}
   - {fileID: 260264341}
-  - {fileID: 971914434}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9243,7 +9260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 0
+  m_BindingMode: 4
   m_FollowOffset: {x: 15.2, y: 13.3, z: -15.2}
   m_XDamping: 1
   m_YDamping: 1
@@ -10051,6 +10068,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1159163856}
+  - {fileID: 971914434}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
