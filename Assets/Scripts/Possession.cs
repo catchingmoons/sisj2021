@@ -10,7 +10,10 @@ public class Possession : MonoBehaviour
 
     public static Possessable currentFocus;
     public List<Possessable> focusableObjects = new List<Possessable>();
-
+    [SerializeField]
+    AudioSource possessionSound;
+    [SerializeField]
+    AudioSource dropSound;
     [SerializeField]
     Transform holdAtPosition;
     [SerializeField]
@@ -85,13 +88,19 @@ public class Possession : MonoBehaviour
         currentFocus.transform.SetParent(transform);
         currentFocus.transform.position = holdAtPosition.transform.position;
 
+        if (possessionSound?.isActiveAndEnabled ?? false)
+            possessionSound.Play();
+
         possessing = true;
     }
 
     private void unpossess() //Note: does not remove focus
     {
         currentFocus.transform.SetParent(null);
-        
+
+        if (dropSound?.isActiveAndEnabled ?? false)
+            dropSound.Play();
+
         possessing = false;
     }
 

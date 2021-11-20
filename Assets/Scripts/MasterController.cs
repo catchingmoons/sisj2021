@@ -27,12 +27,8 @@ public class MasterController : MonoBehaviour
     {
         if (Instance != null) return;
 
+        SceneManager.LoadScene(main, LoadSceneMode.Additive);
         mainScene = SceneManager.GetSceneByName(main);
-        if (mainScene == null) //Editor can load multiple scenes
-        {
-            SceneManager.LoadScene(main, LoadSceneMode.Additive);
-            mainScene = SceneManager.GetSceneByName(main);
-        }
 
         Instance = this;
     }

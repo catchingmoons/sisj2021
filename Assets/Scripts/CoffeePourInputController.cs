@@ -10,6 +10,8 @@ public class CoffeePourInputController : MonoBehaviour
 
     public Slider fillSlider;
 
+    public AudioSource sound;
+
     public float fillrate = 0.3f;
 
     public float fullness = 0;
@@ -31,9 +33,18 @@ public class CoffeePourInputController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.F)) //purposely not in fixed update - is sensistive to frame rate
         {
+            if (!sound.isPlaying)
+            {
+                sound.Play();
+            }
+
             fullness += fillrate * Time.deltaTime;
 
             fillSlider.value = fullness;
+        }
+        else if (sound != null && sound.isActiveAndEnabled && sound.isPlaying)
+        {
+            sound.Pause();
         }
     }
 }
