@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minDist: 0.05
-  waitDuration: 20
+  waitDuration: 45
   speed: 3
   pickup: {fileID: 0}
 --- !u!114 &4454486506175923079

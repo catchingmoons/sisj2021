@@ -412,7 +412,6 @@ MonoBehaviour:
   main: LodgeMap
   coffeePour: CoffeePour
   passingObj: {fileID: 0}
-  music: {fileID: 1111918440}
 --- !u!81 &1980036752
 AudioListener:
   m_ObjectHideFlags: 0
