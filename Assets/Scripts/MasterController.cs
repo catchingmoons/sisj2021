@@ -25,11 +25,8 @@ public class MasterController : MonoBehaviour
     {
         if (Instance != null) return;
 
-        var loaded = SceneManager.GetSceneByName(main);
-        if (loaded == null || loaded.GetRootGameObjects().Length == 0)
-        {
-            SceneManager.LoadScene(main, LoadSceneMode.Additive);
-        }
+        //var loaded = SceneManager.GetSceneByName(main);
+        SceneManager.LoadScene(main, LoadSceneMode.Additive);
         mainScene = SceneManager.GetSceneByName(main);
 
         if (FindObjectOfType<MusicController>() == null)
