@@ -10,16 +10,14 @@ public class MasterController : MonoBehaviour
     public System.Action<GameObject> onReturn;
 
     //Todo common UI?
-    public string main;
-    public string coffeePour;
+    public string main = "LodgeMap";
+    public string coffeePour = "CoffeePour";
 
+    [HideInInspector]
     public GameObject passingObj;
 
     private string activeScene;
     private GameObject[] hidden;
-
-    [SerializeField]
-    private MusicController music;
 
     private Scene mainScene;
 
@@ -27,8 +25,17 @@ public class MasterController : MonoBehaviour
     {
         if (Instance != null) return;
 
-        SceneManager.LoadScene(main, LoadSceneMode.Additive);
+        var loaded = SceneManager.GetSceneByName(main);
+        if (loaded == null || loaded.GetRootGameObjects().Length == 0)
+        {
+            SceneManager.LoadScene(main, LoadSceneMode.Additive);
+        }
         mainScene = SceneManager.GetSceneByName(main);
+
+        if (FindObjectOfType<MusicController>() == null)
+        {
+            Debug.Log("Warning: Music not started.");
+        }
 
         Instance = this;
     }
@@ -44,14 +51,6 @@ public class MasterController : MonoBehaviour
         {
             Application.Quit();
             return;
-        }
-
-        //DEBUGGING - probably don't want keys to control music
-        if (music != null && music.isActiveAndEnabled)
-        {
-            if (Input.GetKeyDown(KeyCode.L)) music.StopMusic();
-            if (Input.GetKeyDown(KeyCode.P)) music.PlayMusic();
-            if (Input.GetKeyDown(KeyCode.N)) music.NextTrack();
         }
     }
 

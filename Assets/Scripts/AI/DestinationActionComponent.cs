@@ -8,9 +8,9 @@ public class DestinationActionComponent : ActionComponent
     [SerializeField]
     private float minDistance = 0.2f;
 
-    private MovementController mover;
+    MovementController mover;
 
-    public void Update()
+    public virtual void Update()
     {
         if (mover == null) return; //Not started
 

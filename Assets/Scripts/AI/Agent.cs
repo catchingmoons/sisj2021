@@ -12,6 +12,7 @@ public class Agent : MonoBehaviour
     //Should be safe to this whenever... 
     [SerializeField][Tooltip("Description of various things a character might be (e.g. \"wet\", \"cold\", \"has_coffee\")")]
     public List<string> attributes;
+    public List<string> goals;
 
     private ISet<Action> availableActions;
     private Stack<Action> currentActions;
@@ -42,8 +43,6 @@ public class Agent : MonoBehaviour
         if (currentActions.Count == 0)
         {
             AddNewActions();
-            Debug.Assert(currentActions.Count > 0, $"{name} computed no actions!");
-            Debug.Assert(currentAction == null, $"{name} has active action: {currentAction}");
         }
 
         while (currentActions.Count > 0)
@@ -54,7 +53,7 @@ public class Agent : MonoBehaviour
             {
                 if (!action.arePreconditionsMet(this, attributes))
                 {
-                    Debug.LogWarning($"{name} is not eligible to start {action}. Skipping");
+                    Debug.LogWarning($"{name} cannot start {action}. Skipping");
                 }
                 else
                 {
@@ -85,29 +84,16 @@ public class Agent : MonoBehaviour
     {
         Debug.Log($"{name} calculating actions...");
         var solutions = new List<Node>();
-        FindAllAvailableActions(new Node(null, 0, attributes, null), availableActions, solutions);
+        FindAllAvailableActions(new Node(null, attributes, null), availableActions, ref solutions);
 
-        Debug.Assert(solutions.Count > 0, "No viable actions found!");
-
-        //reduce to minimum chains for each potential action
-        Dictionary<Action, Node> mins = new Dictionary<Action, Node>();
-        foreach (var node in solutions)
+        if (solutions.Count == 0)
         {
-            if (mins.TryGetValue(node.action, out var currentMin))
-            {
-                if (currentMin.totalCost > node.totalCost)
-                {
-                    mins[node.action] = node;
-                }
-            }
-            else
-            {
-                mins.Add(node.action, node);
-            }
+            Debug.LogWarning("No viable actions found!");
+            return;
         }
+        Debug.Log("Found " + solutions.Count + " performable actions");
 
-        var potentialActions = mins.Keys.ToList();
-        var selectedNode = mins[potentialActions[Random.Range(0, potentialActions.Count)]];
+        var selectedNode = solutions[Random.Range(0, solutions.Count)];
         while (selectedNode != null && selectedNode.action != null)
         {
             PushAction(selectedNode.action);
@@ -115,19 +101,26 @@ public class Agent : MonoBehaviour
         }
     }
 
-    private void FindAllAvailableActions(Node parent, IEnumerable<Action> actions, List<Node> solutions)
+    private void FindAllAvailableActions(Node parent, IEnumerable<Action> actions, ref List<Node> solutions)
     {
         foreach (Action act in actions)
         {
-            if (act.Preconditions.Intersect(parent.state).Count() == act.Preconditions.Count && act.arePreconditionsMet(this, parent.state))
+            var preconditionsMet = act.Preconditions.Intersect(parent.state).Count() == act.Preconditions.Count;
+            var actMet = act.arePreconditionsMet(this, parent.state);
+            Debug.Log(act + " " + preconditionsMet + " " + actMet);
+            if (preconditionsMet && actMet)
             {
                 var expandedState = parent.state.ToList();
                 ApplyEffects(act.Effects, ref expandedState);
-                var node = new Node(parent, parent.totalCost + act.Cost(this), expandedState, act);
+                var node = new Node(parent, expandedState, act);
 
-                solutions.Add(node);
-
-                FindAllAvailableActions(node, actions.Except(new Action[] { act }), solutions);
+                if (goals.Intersect(expandedState).Count() > 0)
+                {
+                    solutions.Add(node);
+                    continue;
+                }
+                
+                FindAllAvailableActions(node, actions.Except(new Action[] { act }), ref solutions);
             }
         }
     }
@@ -150,14 +143,12 @@ public class Agent : MonoBehaviour
     private class Node
     {
         public Node parent;
-        public float totalCost;
         public IEnumerable<string> state;
         public Action action;
 
-        public Node(Node parent, float totalCost, IEnumerable<string> state, Action action)
+        public Node(Node parent, IEnumerable<string> state, Action action)
         {
             this.parent = parent;
-            this.totalCost = totalCost;
             this.state = state;
             this.action = action;
         }

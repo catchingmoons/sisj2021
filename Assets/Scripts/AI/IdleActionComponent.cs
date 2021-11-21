@@ -25,14 +25,6 @@ public class IdleActionComponent : ActionComponent
         return true;
     }
 
-    public void Awake()
-    {
-        if (Preconditions.Count > 0)
-        {
-            Debug.LogWarning("Idle action has preconditions! May result in no viable actions.");
-        }
-    }
-
     void Update()
     {
         timeRemaining -= Time.deltaTime;

@@ -16,7 +16,7 @@ public class WanderingActionComponent : IdleActionComponent
 
     private bool running;
 
-    public new void Awake()  //Idle action warns about stuff we don't care about, so we specifically avoid base
+    public void Awake()
     {
         moveController = GetComponent<MovementController>();
     }

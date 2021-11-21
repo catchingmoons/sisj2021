@@ -14,7 +14,6 @@ public interface Action
 	public bool GloballyAvailable { get; }
 	public bool Busy { get; }
 	public bool arePreconditionsMet(Agent agent, IEnumerable<string> state);
-	public float Cost(Agent actor);
 	public bool Begin(Agent actor);
 	public void Reset();
 }

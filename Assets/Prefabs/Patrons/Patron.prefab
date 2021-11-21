@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 635175965210144797}
   - component: {fileID: 3715374329555757274}
   - component: {fileID: 7293501394001124352}
-  - component: {fileID: 2628258134773362735}
   m_Layer: 0
   m_Name: Patron
   m_TagString: Untagged
@@ -100,9 +99,9 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &4263248770337343983
 BoxCollider:
@@ -129,7 +128,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2de7e64324d324d4a92ee44b9b90eb27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attributes: []
+  attributes:
+  - outside
+  - cold
+  goals:
+  - warm
+  - rested
+  - inside
 --- !u!114 &635175965210144797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,10 +147,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25ee5b3359d952b4b959fd0542001c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preconditions: []
+  _preconditions:
+  - inside
+  - energized
   _effects:
+  - Key: tired
+    Value: 1
   - Key: bored
     Value: 1
+  - Key: energized
+    Value: 0
   _cost: 1
   MinTime: 5
   MaxTime: 10
@@ -163,6 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _preconditions:
   - bored
+  - inside
   _effects:
   - Key: tired
     Value: 1
@@ -187,22 +199,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   rotateSpeed: 10
---- !u!95 &2628258134773362735
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4263248770337343980}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: bd77a7a9868fa9e4788085d8d6d9287a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
