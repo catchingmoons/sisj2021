@@ -6,6 +6,7 @@ public class PickupCoffee : MonoBehaviour
 {
     CoffeeController coffee;
     public Reactive react;
+    public float dist;
     public bool on;
 
     void Awake()
@@ -13,21 +14,25 @@ public class PickupCoffee : MonoBehaviour
         react = GetComponent<Reactive>();
     }
 
-    void OnTriggerStay(Collider other)
+    void Update()
     {
         if (!on) return;
 
-        if (coffee == null && other.CompareTag("coffee"))
+        if (coffee == null)
         {
-            var newCoffee = other.GetComponent<CoffeeController>();
-            if (newCoffee.fullness > 0.5f)
+            var allCoffees = FindObjectsOfType<CoffeeController>(); //very slow - but oh well!
+            foreach (var coffee in allCoffees)
             {
-                coffee = newCoffee;
-                coffee.transform.parent = transform;
-                coffee.transform.position = transform.position;
-                coffee.fullness = 0f;
-
-                react.react_pos();
+                if ((Possession.currentFocus == null || Possession.currentFocus.gameObject != coffee.gameObject) && coffee.fullness > 0.5f 
+                    && (coffee.transform.position - transform.position).sqrMagnitude <= dist)
+                {
+                    this.coffee = coffee;
+                    coffee.transform.parent = transform;
+                    coffee.transform.position = transform.position;
+                    coffee.fullness = 0f;
+                    react.react_pos();
+                    return;
+                }
             }
         }
     }

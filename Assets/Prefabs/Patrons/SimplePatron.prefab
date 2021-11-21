@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5110634865356273280}
   - component: {fileID: 4599266875291712716}
   - component: {fileID: 4454486506175923079}
+  - component: {fileID: 6491589026014557293}
   m_Layer: 0
   m_Name: SimplePatron
   m_TagString: Untagged
@@ -130,7 +131,7 @@ MonoBehaviour:
   minDist: 0.05
   waitDuration: 45
   speed: 3
-  pickup: {fileID: 0}
+  pickup: {fileID: 6491589026014557293}
 --- !u!114 &4454486506175923079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,6 +145,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   react_prefab: {fileID: 8658623561603362774, guid: a165da49648c7fd4689f1b5192292c8b, type: 3}
+--- !u!114 &6491589026014557293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4272392574816337299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e51a214f0aff5c4cb36306f40e00856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  react: {fileID: 4454486506175923079}
+  dist: 300
+  on: 0
 --- !u!1001 &2841970278235752141
 PrefabInstance:
   m_ObjectHideFlags: 0

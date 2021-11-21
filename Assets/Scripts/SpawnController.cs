@@ -78,11 +78,11 @@ public class SpawnController : MonoBehaviour
 
     private Transform RandomSpawnPoint() => spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-    public void OnGUI()
+    /*public void OnGUI()
     {
         if (GUILayout.Button("Spawn"))
         {
             AddPrefab(out _);
         }
-    }
+    }*/
 }
